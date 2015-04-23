@@ -1,0 +1,20 @@
+WARNING: cannot find kernel debuginfo : NO DWARF information: 
+
+How to solve this?
+1. If you are taking kernel from your distro like fedora, Try to install kernel-debuginfo package
+
+2. If you are building your own custom kernel , then try the following:
+
+2.1. make menuconfig
+2.2. Important kernel configurations are :
+	DEBUG_KERNEL [=y]
+Location:                                                                                                                                                                                   │  
+  │     -> Kernel hacking
+
+2.3. Another important configuration is:
+	CONFIG_DEBUG_INFO:
+ Location:                                                                                                                                                                                   │  
+  │     -> Kernel hacking                                                                                                                                                                         │  
+  │       -> Compile-time checks and compiler options
+
+2.4. Build the kernel..Thats it!!
