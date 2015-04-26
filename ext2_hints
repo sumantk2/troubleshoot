@@ -40,4 +40,3 @@ probe kernel.function("*@fs/ext2/*.c") {
 (...)
 
 4. Now understand the code using cscope,vim and ctags ( Wonderfull tool forever for a programmer !!)
-
