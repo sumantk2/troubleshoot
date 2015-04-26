@@ -1,0 +1,43 @@
+- Enable the ext2 support in the kernel.
+       <*> Second extended fs support                                                │ │
+  │ │        [*]   Ext2 extended attributes                                                │ │  
+  │ │        [*]     Ext2 POSIX Access Control Lists                                       │ │  
+  │ │        [*]     Ext2 Security Labels
+
+Make sure that you check the ACL and security labels support in the ext2 config
+Otherwise you may get Operation not supported message while mount ext2 filesystem.
+
+Tips for finding some of the important functions ( if you want to learn the traceback of ext2 filesystem )
+You can find ext2 easier because it is around 8-9k code of lines . So easier to grasp the things if you
+want to learn some of the concepts of filesystem. Later on, You can try to understand some other complex 
+filesystem.
+
+1. stap -v ext2.stp -c "echo sum > /dir/out]"
+2.  cat ext2.stp 
+probe kernel.function("*@fs/ext2/*.c") {
+	print_backtrace();
+	print("---------------------");
+}
+
+3. Some of the function printed while writing a message to a ext2 filesystem.
+0xffffffff811e7130 : ext2_lookup+0x0/0xa0 [kernel]
+ 0xffffffff81172df8 : lookup_real+0x18/0x50 [kernel]
+ 0xffffffff81177fa9 : do_last+0x8e9/0x1100 [kernel]
+ 0xffffffff8117883f : path_openat+0x7f/0x620 [kernel]
+ 0xffffffff8117a1f5 : do_filp_open+0x35/0x90 [kernel]
+ 0xffffffff81168dd3 : do_sys_open+0x123/0x220 [kernel]
+ 0xffffffff81168ee9 : sys_open+0x19/0x20 [kernel]
+ 0xffffffff818969d7 : system_call_fastpath+0x12/0x6a [kernel]
+--------------------- 0xffffffff811e2700 : ext2_inode_by_name+0x0/0x30 [kernel]
+ 0xffffffff811e716c : ext2_lookup+0x3c/0xa0 [kernel]
+ 0xffffffff81172df8 : lookup_real+0x18/0x50 [kernel]
+ 0xffffffff81177fa9 : do_last+0x8e9/0x1100 [kernel]
+ 0xffffffff8117883f : path_openat+0x7f/0x620 [kernel]
+ 0xffffffff8117a1f5 : do_filp_open+0x35/0x90 [kernel]
+ 0xffffffff81168dd3 : do_sys_open+0x123/0x220 [kernel]
+ 0xffffffff81168ee9 : sys_open+0x19/0x20 [kernel]
+ 0xffffffff818969d7 : system_call_fastpath+0x12/0x6a [kernel]
+(...)
+
+4. Now understand the code using cscope,vim and ctags ( Wonderfull tool forever for a programmer !!)
+
